@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 
 class StatStruct:
     commit_hash = ""
@@ -20,7 +21,11 @@ class StatStruct:
         return return_value
 
 
-stat = open("stat.txt", "r")
+stat=None
+if (len(sys.argv) > 1):
+	stat = open("statDateRestricted.txt", "r");
+else:
+	stat = open("stat.txt", "r")
 commits = stat.read().split("#")
 stats = []
 
@@ -40,7 +45,10 @@ for x in commits[1:]:   # starting from 1 due to an empty string in index 0 caus
 
 
 stat.close()
-stat = open("stat.txt", "w")
+if (len(sys.argv) > 1):
+	stat = open("statDateRestricted.txt", "w");
+else:
+	stat = open("stat.txt", "w")
 
 for i in stats[:-1]:
     stat.write(i.__str__())

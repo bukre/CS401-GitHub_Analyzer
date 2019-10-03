@@ -10,6 +10,8 @@
 # Functions
 ###
 
+currentDir=$(pwd)
+
 function createLog()
 {
 	git log --decorate=full --pretty=format:"%H|%an|%cn|%cd|%s" > "$currentDir/log.txt" 2>&1
@@ -17,11 +19,27 @@ function createLog()
 	python format_log.py
 }
 
+function createLogWithDateRestriction()
+{
+	dateInput=$1
+	git log --name-only $dateInput --pretty=format:"#%H|%an|%cn|%cd" > "$currentDir/logDateRestricted.txt" 2>&1
+	cd "$currentDir"
+	python format_log.py true
+}
+
 function createStat()
 {
 	git log --name-only --pretty=format:"#%H|%an|%cn|%cd" > "$currentDir/stat.txt" 2>&1
 	cd "$currentDir"
 	python format_stat.py
+}
+
+function createStatWithDateRestriction()
+{
+	dateInput=$1
+	git log --name-only $dateInput --pretty=format:"#%H|%an|%cn|%cd" > "$currentDir/statDateRestricted.txt" 2>&1
+	cd "$currentDir"
+	python format_stat.py true
 }
 
 
@@ -41,10 +59,10 @@ if [[ "$@" = "-h" ]]; then
 fi
 
 if [[ "$#" != 0 ]] && [[ "$@" != "-h" ]]; then
+	dateString=""
 	declare -a commands
 	IFS=' '
 	read -a commands <<< "$@" # parse the input for multiple commands
-	currentDir=$(pwd)
 	cd ..
 	for i in "${commands[@]}"
 	do
@@ -52,10 +70,16 @@ if [[ "$#" != 0 ]] && [[ "$@" != "-h" ]]; then
 			createLog
 		elif [ "$i" = "-stat" ]; then
 			createStat
+		elif [[ "$i" = *after* ]] || [[ "$i" = *before* ]]; then
+			dateString="${dateString} $i"
 		else
 			printf "Command not recognized.\nList of all the commands: git_data_collector -h\n"
 		fi
 	done
+	
+	if [[ -n $dateString ]]; then
+		createStatWithDateRestriction $dateString
+	fi
 
 fi
 

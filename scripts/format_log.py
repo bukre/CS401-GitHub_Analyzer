@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 
 class LogStruct:
     commit_hash = ""
@@ -16,8 +17,11 @@ class LogStruct:
                        "\nSubject: " + self.subject
         return return_value
 
-
-log = open("log.txt", "r")
+log=None
+if (len(sys.argv) > 1):
+	log = open("logDateRestricted.txt", "r");
+else:
+	log = open("log.txt", "r")
 logs = []
 log_split = []
 
@@ -33,7 +37,10 @@ for x in log:
 
 log.close()
 
-log = open("log.txt", "w")
+if (len(sys.argv) > 1):
+	log = open("logDateRestricted.txt", "w");
+else:
+	log = open("log.txt", "w")
 
 for x in logs[:-1]:
     log.write(x.__str__())
