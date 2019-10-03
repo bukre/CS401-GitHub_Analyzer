@@ -12,34 +12,16 @@
 
 currentDir=$(pwd)
 
-function createLog()
+function formatData()
 {
-	git log --decorate=full --pretty=format:"%H|%an|%cn|%cd|%s" > "$currentDir/log.txt" 2>&1
+	git log --name-only --pretty=format:"#%H|%an|%cn|%cd|%s" > "$currentDir/FormattedData.txt" 2>&1
 	cd "$currentDir"
-	python format_log.py
+	python format_data.py
 }
 
-function createLogWithDateRestriction()
+function formatDataDateRestriction()
 {
-	dateInput=$1
-	git log --name-only $dateInput --pretty=format:"#%H|%an|%cn|%cd" > "$currentDir/logDateRestricted.txt" 2>&1
-	cd "$currentDir"
-	python format_log.py true
-}
-
-function createStat()
-{
-	git log --name-only --pretty=format:"#%H|%an|%cn|%cd" > "$currentDir/stat.txt" 2>&1
-	cd "$currentDir"
-	python format_stat.py
-}
-
-function createStatWithDateRestriction()
-{
-	dateInput=$1
-	git log --name-only $dateInput --pretty=format:"#%H|%an|%cn|%cd" > "$currentDir/statDateRestricted.txt" 2>&1
-	cd "$currentDir"
-	python format_stat.py true
+	echo TODO
 }
 
 
@@ -54,7 +36,6 @@ fi
 
 if [[ "$@" = "-h" ]]; then
 	echo "-log -> Generates log.txt file with commit history and commit notes."
-	echo "-stat -> Generates stat.txt file with commit history and commited and changed files."
 	exit
 fi
 
@@ -67,19 +48,17 @@ if [[ "$#" != 0 ]] && [[ "$@" != "-h" ]]; then
 	for i in "${commands[@]}"
 	do
 		if [ "$i" = "-log" ]; then
-			createLog
-		elif [ "$i" = "-stat" ]; then
-			createStat
-		elif [[ "$i" = *after* ]] || [[ "$i" = *before* ]]; then
-			dateString="${dateString} $i"
+			formatData
+#		elif [[ "$i" = *after* ]] || [[ "$i" = *before* ]]; then
+#			dateString="${dateString} $i"
 		else
 			printf "Command not recognized.\nList of all the commands: git_data_collector -h\n"
 		fi
 	done
 	
-	if [[ -n $dateString ]]; then
-		createStatWithDateRestriction $dateString
-	fi
+#	if [[ -n $dateString ]]; then
+#		createStatWithDateRestriction $dateString
+#	fi
 
 fi
 
