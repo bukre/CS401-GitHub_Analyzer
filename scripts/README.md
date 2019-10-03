@@ -5,4 +5,4 @@
 3) Type ***git_data_collector.sh -h*** to see currently available commands.
 4) Multiple commands are accepted. Ex: ***git_data_collector -log -stat***
 5) Date restriction added (currently only for stat)
-	ex: ***git_data_collector --before<date> --after<date>*** where **<date>** is in Git Bash format.
+	ex: ***git_data_collector --before="date" --after="date"*** where **date** is in Git Bash format.
