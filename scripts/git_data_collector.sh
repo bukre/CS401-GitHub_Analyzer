@@ -21,7 +21,10 @@ function formatData()
 
 function formatDataDateRestriction()
 {
-	echo TODO
+	parameter=$1
+	git log --name-only $parameter --pretty=format:"#%H|%an|%cn|%cd|%s" > "$currentDir/FormattedDataDateRestricted.txt" 2>&1
+	cd "$currentDir"
+	python format_data.py $parameter
 }
 
 
@@ -40,7 +43,7 @@ if [[ "$@" = "-h" ]]; then
 fi
 
 if [[ "$#" != 0 ]] && [[ "$@" != "-h" ]]; then
-	dateString=""
+	dateString=
 	declare -a commands
 	IFS=' '
 	read -a commands <<< "$@" # parse the input for multiple commands
@@ -49,16 +52,16 @@ if [[ "$#" != 0 ]] && [[ "$@" != "-h" ]]; then
 	do
 		if [ "$i" = "-log" ]; then
 			formatData
-#		elif [[ "$i" = *after* ]] || [[ "$i" = *before* ]]; then
-#			dateString="${dateString} $i"
+		elif [[ "$i" = *after* ]] || [[ "$i" = *before* ]]; then
+			dateString="${dateString} $i"
 		else
 			printf "Command not recognized.\nList of all the commands: git_data_collector -h\n"
 		fi
 	done
 	
-#	if [[ -n $dateString ]]; then
-#		createStatWithDateRestriction $dateString
-#	fi
+	if [[ -n $dateString ]]; then
+		formatDataDateRestriction $dateString
+	fi
 
 fi
 
