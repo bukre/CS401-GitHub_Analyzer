@@ -39,6 +39,8 @@ fi
 
 if [[ "$@" = "-h" ]]; then
 	echo "-log -> Generates log.txt file with commit history and commit notes."
+	echo "--after="date" -> Shows the commits after the specified date. Date style is like Git Bash date."
+	echo "--before="date" -> Shows the commits before the specified date."
 	exit
 fi
 
