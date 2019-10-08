@@ -43,7 +43,7 @@ class DataFormat:
 
 def format_file(file_name):
     file = open(file_name, "r", encoding="utf-8")
-    separated_commits = file.read().split("#")
+    separated_commits = file.read().split("Ω")
     file.close()
     final_string = ""
     for i in separated_commits[1:]:  # Due to formatting, the index [0] is an empty string.
@@ -68,11 +68,9 @@ def main():
     to_be_searched = ["before", "after"]
     if any(x in str(sys.argv) for x in to_be_searched):
         file_name = "FormattedDataDateRestricted.txt"
-        print(file_name)
         format_file(file_name)
     else:
         file_name = "FormattedData.txt"
-        print(file_name)
         format_file(file_name)
 
 

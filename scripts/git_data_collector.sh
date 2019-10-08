@@ -14,7 +14,7 @@ currentDir=$(pwd)
 
 function formatData()
 {
-	git log --name-only --pretty=format:"#%H|%an|%cn|%cd|%s" > "$currentDir/FormattedData.txt" 2>&1
+	git log --name-only --pretty=format:"Ω%H|%an|%cn|%cd|%s" > "$currentDir/FormattedData.txt" 2>&1
 	cd "$currentDir"
 	python format_data.py
 }
@@ -22,7 +22,7 @@ function formatData()
 function formatDataDateRestriction()
 {
 	parameter=$1
-	git log --name-only $parameter --pretty=format:"#%H|%an|%cn|%cd|%s" > "$currentDir/FormattedDataDateRestricted.txt" 2>&1
+	git log --name-only $parameter --pretty=format:"Ω%H|%an|%cn|%cd|%s" > "$currentDir/FormattedDataDateRestricted.txt" 2>&1
 	cd "$currentDir"
 	python format_data.py $parameter
 }
